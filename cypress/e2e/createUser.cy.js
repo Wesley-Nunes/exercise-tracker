@@ -1,7 +1,7 @@
 describe('create an user', () => {
   it('creates an new user', () => {
     cy.visit('/');
-    cy.intercept('POST', '/api/user').as('createUserRequest');
+    cy.intercept('POST', '/api/users').as('createUserRequest');
 
     cy.get('create-user')
       .shadow()
@@ -29,7 +29,7 @@ describe('create an user', () => {
   })
   it('creates another new user', () => {
     cy.visit('/');
-    cy.intercept('POST', '/api/user').as('createUserRequest');
+    cy.intercept('POST', '/api/users').as('createUserRequest');
 
     cy.get('create-user')
       .shadow()

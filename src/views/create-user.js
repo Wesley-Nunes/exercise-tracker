@@ -19,7 +19,7 @@ class CreateUser extends HTMLElement {
 			}
 		`;
 
-		form.action = '/api/user';
+		form.action = '/api/users';
 		form.method = 'post';
 		form.name = 'create-user';
 		input.dataset.test = 'create-user-input';
