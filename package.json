@@ -2,7 +2,7 @@
   "name": "exercise-tracker",
   "description": "",
   "version": "0.1.0",
-  "main": "src/main.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
     "dev": "node --watch src/main.js",

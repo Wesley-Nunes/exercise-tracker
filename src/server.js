@@ -5,6 +5,7 @@ import helmet from "helmet";
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import mongoose from 'mongoose';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 const host = process.env.HOST || '0.0.0.0';
@@ -22,28 +23,7 @@ app.get('/', (req, res) => {
 	res.sendFile(path.resolve(`${__dirname}/index.html`));
 });
 
-
-const usernameSchema = new mongoose.Schema(
-	{ username: { type: String, required: true } }
-);
-const Username = mongoose.model('Username', usernameSchema);
-
-
-app.get('/api/users', async (req, res) => {
-	const { username, _id } = await Username.find({});
-
-	res.json({ username, _id });
-});
-app.post('/api/users', async (req, res) => {
-	const { username, _id } = await Username.create(req.body);
-
-	res.json({ username, _id });
-});
-app.delete('/api/users', async (req, res) => {
-	const response = await Username.deleteMany({});
-
-	res.json(response);
-});
+app.use('/api', userRoutes);
 
 mongoose.connect(process.env.DB_URL);
 

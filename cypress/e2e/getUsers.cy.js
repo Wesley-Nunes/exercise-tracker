@@ -3,6 +3,10 @@ describe('get users', () => {
     cy.visit('/');
     cy.intercept('GET', '/api/users').as('getUsersRequest');
 
+    cy.request('DELETE', '/api/users')
+      .its('status')
+      .should('eq', 200);
+
     cy.resultIn('get-users').should('not.be.visible')
 
     cy.get('get-users')
