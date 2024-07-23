@@ -3,20 +3,11 @@ describe('create an user', () => {
     cy.visit('/');
     cy.intercept('POST', '/api/users').as('createUserRequest');
 
-    cy.get('create-user')
-      .shadow()
-      .find('[data-test="create-user-input"]')
-      .type('shut');
+    cy.resultIn('create-user').should('not.be.visible')
 
-    cy.get('create-user')
-      .shadow()
-      .find('[data-test="create-user-btn"]')
-      .click();
+    cy.createUser('shut');
 
-    cy.get('create-user')
-      .shadow()
-      .find('[data-test="create-user-result"]')
-      .should('be.visible')
+    cy.resultIn('create-user').should('be.visible')
 
     cy.wait('@createUserRequest').then((interception) => {
       const result = interception.response.body;
@@ -31,20 +22,11 @@ describe('create an user', () => {
     cy.visit('/');
     cy.intercept('POST', '/api/users').as('createUserRequest');
 
-    cy.get('create-user')
-      .shadow()
-      .find('[data-test="create-user-input"]')
-      .type('Ravena');
+    cy.resultIn('create-user').should('not.be.visible')
 
-    cy.get('create-user')
-      .shadow()
-      .find('[data-test="create-user-btn"]')
-      .click();
+    cy.createUser('Ravena');
 
-    cy.get('create-user')
-      .shadow()
-      .find('[data-test="create-user-result"]')
-      .should('be.visible')
+    cy.resultIn('create-user').should('be.visible')
 
     cy.wait('@createUserRequest').then((interception) => {
       const result = interception.response.body;

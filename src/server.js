@@ -4,9 +4,11 @@ import path from 'path';
 import helmet from "helmet";
 import bodyParser from 'body-parser';
 import 'dotenv/config';
+import mongoose from 'mongoose';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
-const host = process.env.HOST || '0.0.0.0';
+const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 const __dirname = import.meta.dirname;
 
@@ -21,11 +23,9 @@ app.get('/', (req, res) => {
 	res.sendFile(path.resolve(`${__dirname}/index.html`));
 });
 
-app.post('/api/users', (req, res) => {
-	const { username } = req.body;
+app.use('/api', userRoutes);
 
-	res.json({ username, _id: "1234" });
-});
+mongoose.connect(process.env.DB_URL);
 
 app.listen(
 	port,
