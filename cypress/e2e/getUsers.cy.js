@@ -1,5 +1,4 @@
 describe('get users', () => {
-  // TODO: before each, clear the db.
   it('should return an empty list of users', () => {
     cy.visit('/');
     cy.intercept('GET', '/api/users').as('getUsersRequest');
@@ -22,6 +21,10 @@ describe('get users', () => {
     cy.visit('/');
     cy.intercept('GET', '/api/users').as('getUsersRequest');
 
+    cy.request('DELETE', '/api/users')
+      .its('status')
+      .should('eq', 200);
+
     cy.createUser('shut');
     cy.createUser('Ravena');
     cy.createUser('Estrela');
@@ -36,12 +39,10 @@ describe('get users', () => {
 
     cy.resultIn('get-users').should('be.visible')
 
-    /*
     cy.wait('@getUsersRequest').then((interception) => {
       const result = interception.response.body;
       expect(result.length).to.equal(4);
     });
-    */
   })
 })
 
