@@ -3,18 +3,17 @@ describe('get users', () => {
     cy.visit('/');
     cy.intercept('GET', '/api/users').as('getUsersRequest');
 
-    cy.request('DELETE', '/api/users')
-      .its('status')
-      .should('eq', 200);
-
-    cy.resultIn('get-users').should('not.be.visible')
+    cy.clearUsers();
 
     cy.get('get-users')
-      .shadow()
-      .find('[data-test="get-users-btn"]')
-      .click();
+      .find('[data-test="result-wrapper"]')
+      .should('not.be.visible');
 
-    cy.resultIn('get-users').should('be.visible')
+    cy.get('get-users').find('[data-test="get-users-btn"]').click();
+
+    cy.get('get-users')
+      .find('[data-test="result-wrapper"]')
+      .should('be.visible');
 
     cy.wait('@getUsersRequest').then((interception) => {
       const result = interception.response.body;
@@ -25,23 +24,22 @@ describe('get users', () => {
     cy.visit('/');
     cy.intercept('GET', '/api/users').as('getUsersRequest');
 
-    cy.request('DELETE', '/api/users')
-      .its('status')
-      .should('eq', 200);
+    cy.clearUsers();
 
     cy.createUser('shut');
     cy.createUser('Ravena');
     cy.createUser('Estrela');
     cy.createUser('Bruxa');
 
-    cy.resultIn('get-users').should('not.be.visible')
+    cy.get('get-users')
+      .find('[data-test="result-wrapper"]')
+      .should('not.be.visible');
+
+    cy.get('get-users').find('[data-test="get-users-btn"]').click();
 
     cy.get('get-users')
-      .shadow()
-      .find('[data-test="get-users-btn"]')
-      .click();
-
-    cy.resultIn('get-users').should('be.visible')
+      .find('[data-test="result-wrapper"]')
+      .should('be.visible');
 
     cy.wait('@getUsersRequest').then((interception) => {
       const result = interception.response.body;
@@ -49,6 +47,4 @@ describe('get users', () => {
     });
   })
 })
-
-
 

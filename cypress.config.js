@@ -9,4 +9,5 @@ export default defineConfig({
   e2e: {
     baseUrl
   },
+  includeShadowDom: true
 });

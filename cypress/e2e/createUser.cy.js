@@ -3,11 +3,15 @@ describe('create an user', () => {
     cy.visit('/');
     cy.intercept('POST', '/api/users').as('createUserRequest');
 
-    cy.resultIn('create-user').should('not.be.visible')
+    cy.get('create-user')
+      .find('[data-test="result-wrapper"]')
+      .should('not.be.visible')
 
     cy.createUser('shut');
 
-    cy.resultIn('create-user').should('be.visible')
+    cy.get('create-user')
+      .find('[data-test="result-wrapper"]')
+      .should('be.visible')
 
     cy.wait('@createUserRequest').then((interception) => {
       const result = interception.response.body;
@@ -22,11 +26,15 @@ describe('create an user', () => {
     cy.visit('/');
     cy.intercept('POST', '/api/users').as('createUserRequest');
 
-    cy.resultIn('create-user').should('not.be.visible')
+    cy.get('create-user')
+      .find('[data-test="result-wrapper"]')
+      .should('not.be.visible')
 
     cy.createUser('Ravena');
 
-    cy.resultIn('create-user').should('be.visible')
+    cy.get('create-user')
+      .find('[data-test="result-wrapper"]')
+      .should('be.visible')
 
     cy.wait('@createUserRequest').then((interception) => {
       const result = interception.response.body;
