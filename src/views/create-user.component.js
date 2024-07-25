@@ -1,5 +1,6 @@
-import PubSub from "./PubSub.js";
 import ResultContent from "./result-content.component.js";
+import InputForm from "./input-form.component.js";
+import PubSub from "./PubSub.js";
 
 class CreateUser extends HTMLElement {
 	subscribe = () => { };
@@ -13,16 +14,14 @@ class CreateUser extends HTMLElement {
 	}
 	connectedCallback() {
 		const shadow = this.attachShadow({ mode: 'open' });
-		const input = document.createElement('input');
+		const input = new InputForm('username', 'create-user-input');
 		const btn = document.createElement('button');
 		const result = new ResultContent(this.subscribe);
 
 		this.form.action = '/api/users';
 		this.form.method = 'post';
 		this.form.name = 'create-user';
-		input.dataset.test = 'create-user-input';
-		input.name = 'username';
-		input.required = true;
+		this.form.id = 'create-user';
 		btn.dataset.test = 'create-user-btn';
 		btn.textContent = 'Submit';
 
@@ -36,22 +35,18 @@ class CreateUser extends HTMLElement {
 
 		try {
 			const formData = new FormData(this.form);
-			const formObject = {};
-
-			formData.forEach((value, key) => {
-				formObject[key] = value;
-			});
+			const username = formData.get('username');
 
 			const response = await fetch(this.form.action, {
 				method: this.form.method,
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(formObject)
+				body: JSON.stringify({ username })
 			});
 			const user = await response.json();
 
 			this.publish('users', user);
 		} catch (error) {
-			result.textContent = `Error: ${error.message}`;
+			this.publish('users', error.message);
 		}
 	}
 }
