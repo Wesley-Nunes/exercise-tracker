@@ -8,7 +8,6 @@ const getUsers = async (req, res) => {
 	res.json(usersClean);
 };
 
-// FIX: Make validations for req.body
 const postUsers = async (req, res) => {
 	const { username, _id } = await User.create(req.body);
 

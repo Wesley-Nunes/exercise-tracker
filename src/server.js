@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
+import exerciseRoutes from './routes/exerciseRoutes.js';
 
 const app = express();
 const host = process.env.HOST || '127.0.0.1';
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', userRoutes);
+app.use('/api', exerciseRoutes);
 
 mongoose.connect(process.env.DB_URL);
 
