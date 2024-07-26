@@ -1,4 +1,4 @@
-const topics = ['users', 'exercises'];
+const topics = ['users', 'exercises', 'logs'];
 const PubSub = () => {
 	const subscribersPerTopic = {};
 	const subscribe = (topic, subscriber) => {

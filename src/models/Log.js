@@ -14,9 +14,9 @@ const logSchema = new mongoose.Schema({
 	},
 	log: [exerciseSchema],
 });
-logSchema.virtual('count').get(function () { return this.log.length });
+logSchema.virtual('count').get(function() { return this.log.length });
 logSchema.virtual('exercisesRes')
-	.get(function () {
+	.get(function() {
 		const count = this.count;
 		const { description, duration, date } = this.log[count - 1];
 		const response = {
@@ -29,6 +29,19 @@ logSchema.virtual('exercisesRes')
 
 		return response;
 	});
+logSchema.virtual('logsRes')
+	.get(function() {
+		const _id = this._id;
+		const username = this.username;
+		const count = this.count;
+		const log = this.log.map(({ description, duration, date }) => ({
+			description, duration, date: date.toDateString()
+		}));
+		const response = { _id, username, count, log };
+
+		return response;
+	});
+
 
 const Log = mongoose.model('Log', logSchema);
 
