@@ -22,6 +22,7 @@ class ResultContent extends HTMLElement {
 
 		this.subscribe('users', this.addTextMessage.bind(this));
 		this.subscribe('exercises', this.addTextMessage.bind(this));
+		this.subscribe('logs', this.addTextMessage.bind(this));
 
 		shadow.append(this.result, style);
 	}
