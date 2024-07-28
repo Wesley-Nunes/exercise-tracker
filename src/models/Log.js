@@ -14,34 +14,51 @@ const logSchema = new mongoose.Schema({
 	},
 	log: [exerciseSchema],
 });
-logSchema.virtual('count').get(function() { return this.log.length });
-logSchema.virtual('exercisesRes')
-	.get(function() {
-		const count = this.count;
-		const { description, duration, date } = this.log[count - 1];
-		const response = {
-			username: this.username,
+logSchema.virtual('exercisesRes').get(function () {
+	const { description, duration, date } =
+		this.log[this.log.length - 1];
+	const response = {
+		username: this.username,
+		_id: this._id,
+		description,
+		duration,
+		date: date.toDateString()
+	};
+
+	return response;
+});
+logSchema.methods.logsRes = function (from, to, limit) {
+	try {
+		let log = [];
+		const logByDate = this.log.filter(({ date }) => {
+			const logDate = new Date(date);
+			return logDate >= from && logDate <= to;
+		});
+		const endSize = limit
+			? Math.min(logByDate.length, limit)
+			: logByDate.length;
+
+		for (let i = 0; i < endSize; i += 1) {
+			const { description, duration, date } = logByDate[i];
+			log.push({
+				description,
+				duration,
+				date: date.toDateString()
+			});
+		}
+
+		const response = ({
 			_id: this._id,
-			description,
-			duration,
-			date: date.toDateString()
-		};
+			username: this.username,
+			count: log.length,
+			log
+		});
 
 		return response;
-	});
-logSchema.virtual('logsRes')
-	.get(function() {
-		const _id = this._id;
-		const username = this.username;
-		const count = this.count;
-		const log = this.log.map(({ description, duration, date }) => ({
-			description, duration, date: date.toDateString()
-		}));
-		const response = { _id, username, count, log };
-
-		return response;
-	});
-
+	} catch (err) {
+		console.error(err);
+	}
+}
 
 const Log = mongoose.model('Log', logSchema);
 
