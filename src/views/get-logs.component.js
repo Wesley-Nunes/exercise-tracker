@@ -14,7 +14,14 @@ class GetLogs extends HTMLElement {
 	}
 	connectedCallback() {
 		const shadow = this.attachShadow({ mode: 'open' });
-		const input = new InputForm('userid', 'get-logs-input');
+		const userIdInput = new InputForm(
+			'userid', 'get-logs-userid-input');
+		const filterFromInput = new InputForm(
+			'from', 'get-logs-from-input', false);
+		const filterToInput = new InputForm(
+			'to', 'get-logs-to-input', false);
+		const filterLimitInput = new InputForm(
+			'limit', 'get-logs-limit-input', false);
 		const btn = document.createElement('button');
 		const result = new ResultContent(this.subscribe);
 
@@ -25,7 +32,14 @@ class GetLogs extends HTMLElement {
 
 		this.form.addEventListener('submit', this.getLogs.bind(this));
 
-		this.form.append(input, btn, result);
+		this.form.append(
+			userIdInput,
+			filterFromInput,
+			filterToInput,
+			filterLimitInput,
+			btn,
+			result
+		);
 		shadow.append(this.form);
 	}
 	async getLogs(event) {
@@ -33,12 +47,25 @@ class GetLogs extends HTMLElement {
 
 		try {
 			const formData = new FormData(this.form);
-			const { userid } = Object.fromEntries(formData);
+			const { userid, from, to, limit } =
+				Object.fromEntries(formData);
+			let query = {};
+			let path = this.form.action.replace(':userid', userid);
+			if (from) {
+				query.from = from;
+			}
+			if (to) {
+				query.to = to;
+			}
+			if (limit) {
+				query.limit = limit;
+			}
+			const endpoint = new URL(path);
 
-			const response = await fetch(
-				this.form.action.replace(':userid', userid), {
-				headers: { 'Content-Type': 'application/json' },
-			});
+			endpoint.search = new URLSearchParams(query);
+
+			const response = await fetch(endpoint,
+				{ headers: { 'Content-Type': 'application/json' } });
 			const logs = await response.json();
 
 			this.publish('logs', logs);
