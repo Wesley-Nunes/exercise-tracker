@@ -14,9 +14,11 @@ class CreateUser extends HTMLElement {
 	}
 	connectedCallback() {
 		const shadow = this.attachShadow({ mode: 'open' });
-		const input = new InputForm('username', 'create-user-input');
+		const input = new InputForm(
+			'username', 'create-user-input', 'Username:*');
 		const btn = document.createElement('button');
 		const result = new ResultContent(this.subscribe);
+		const btnStyles = document.createElement("link");
 
 		this.form.action = '/api/users';
 		this.form.method = 'post';
@@ -25,9 +27,12 @@ class CreateUser extends HTMLElement {
 		btn.dataset.test = 'create-user-btn';
 		btn.textContent = 'Submit';
 
+		btnStyles.setAttribute("rel", "stylesheet");
+		btnStyles.setAttribute("href", "./btn.css");
+
 		this.form.addEventListener('submit', this.createUser.bind(this));
 
-		this.form.append(input, btn, result);
+		this.form.append(btnStyles, input, btn, result);
 		shadow.append(this.form);
 	}
 	async createUser(event) {
