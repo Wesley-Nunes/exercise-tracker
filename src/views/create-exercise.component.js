@@ -16,13 +16,16 @@ class CreateExercise extends HTMLElement {
 	connectedCallback() {
 		const shadow = this.attachShadow({ mode: 'open' });
 		const idInput = new InputForm(
-			'userid', 'create-exercise-id-input');
+			'userid', 'create-exercise-id-input', 'User id:*');
 		const descriptionInput = new InputForm(
-			'description', 'create-exercise-description-input');
+			'description',
+			'create-exercise-description-input',
+			'Description*');
 		const durationInput = new InputForm(
-			'duration', 'create-exercise-duration-input');
+			'duration', 'create-exercise-duration-input', 'Duration*');
 		const dateInput = new InputForm(
-			'date', 'create-exercise-date-input', false);
+			'date', 'create-exercise-date-input', 'Date:', false);
+		const btnStyles = document.createElement("link");
 
 		const btn = document.createElement('button');
 		const result = new ResultContent(this.subscribe);
@@ -32,6 +35,9 @@ class CreateExercise extends HTMLElement {
 		this.form.name = 'create-exercise';
 		btn.dataset.test = 'create-exercise-btn';
 		btn.textContent = 'Submit';
+
+		btnStyles.setAttribute("rel", "stylesheet");
+		btnStyles.setAttribute("href", "./btn.css");
 
 		this.form.addEventListener('submit', this.createExercise.bind(this));
 
@@ -43,7 +49,7 @@ class CreateExercise extends HTMLElement {
 			btn,
 			result
 		);
-		shadow.append(this.form);
+		shadow.append(btnStyles, this.form);
 	}
 	async createExercise(event) {
 		event.preventDefault();

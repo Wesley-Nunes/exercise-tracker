@@ -13,11 +13,16 @@ class GetUsers extends HTMLElement {
 		const shadow = this.attachShadow({ mode: 'open' });
 		const btn = document.createElement('button');
 		const result = new ResultContent(this.subscribe);
+		const btnStyles = document.createElement("link");
 
 		btn.dataset.test = 'get-users-btn';
+		btn.textContent = 'Submit';
 		btn.addEventListener('click', this.getUsers.bind(this));
 
-		shadow.append(btn, result);
+		btnStyles.setAttribute("rel", "stylesheet");
+		btnStyles.setAttribute("href", "./btn.css");
+
+		shadow.append(btnStyles, btn, result);
 	}
 	async getUsers() {
 		try {

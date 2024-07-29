@@ -1,22 +1,58 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script type="module" defer src="./components.js"></script>
-    <title>Exercise Tracker</title>
+    <title>Exercise tracker API</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./components.js" type="module" defer></script>
 </head>
 <body>
     <header>
-        <h1>Exercise Tracker</h1>
+        <h1>Exercise tracker API</h1>
     </header>
     <main>
-        <p>Welcome to the Exercise Tracker!</p>
-	<create-user></create-user>
-        <get-users></get-users>
-        <create-exercise></create-exercise>
-        <get-logs></get-logs>
+        <section class="form-section">
+            <h2>Create User</h2>
+            <p>To create a new user, provide a username and submit the form below. The server will respond with the created user's details.</p>
+            <div class="api-wrapper">
+                <kbd class="method">POST</kbd>
+                <code class="endpoint">/api/users</code>
+            </div>
+            <create-user></create-user>
+        </section>
+        <section class="form-section">
+            <h2>Get Users</h2>
+            <p>Click the button below to retrieve a list of all users from the server. The result will be displayed below the button.</p>
+            <div class="api-wrapper">
+                <kbd class="method">GET</kbd>
+                <code class="endpoint">/api/users</code>
+            </div>
+            <get-users></get-users>
+        </section>
+        <section class="form-section">
+            <h2>Create Exercise</h2>
+            <p>To create a new exercise for a user, provide the user ID, exercise description, duration, and date. Submit the form to create the exercise.</p>
+            <div class="api-wrapper">
+                <kbd class="method">POST</kbd>
+                <code class="endpoint">/api/users/:userId/exercises</code>
+            </div>
+            <create-exercise></create-exercise>
+        </section>
+        <section class="form-section">
+            <h2>Get Logs</h2>
+            <p>To get logs for a specific user, provide the user ID and optional filters (from date, to date, and limit). Submit the form to fetch the logs.</p>
+            <div class="api-wrapper">
+                <kbd class="method">GET</kbd>
+                <code class="endpoint">/api/users/:userId/logs</code>
+            </div>
+            <get-logs></get-logs>
+        </section>
     </main>
+    <footer class="footer">
+        <p>Challenge of <a href="https://www.freecodecamp.org/">freeCodeCamp.org</a><br />
+        Coded by <a href="https://www.linkedin.com/in/dev-wesley-nunes/">@Wesley-Nunes</a></p>
+    </footer>
 </body>
 </html>
+

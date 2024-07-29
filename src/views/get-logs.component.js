@@ -15,20 +15,24 @@ class GetLogs extends HTMLElement {
 	connectedCallback() {
 		const shadow = this.attachShadow({ mode: 'open' });
 		const userIdInput = new InputForm(
-			'userid', 'get-logs-userid-input');
+			'userid', 'get-logs-userid-input', 'User id:*');
 		const filterFromInput = new InputForm(
-			'from', 'get-logs-from-input', false);
+			'from', 'get-logs-from-input', 'From(date):', false);
 		const filterToInput = new InputForm(
-			'to', 'get-logs-to-input', false);
+			'to', 'get-logs-to-input', 'To(date):', false);
 		const filterLimitInput = new InputForm(
-			'limit', 'get-logs-limit-input', false);
+			'limit', 'get-logs-limit-input', 'Limit:', false);
 		const btn = document.createElement('button');
 		const result = new ResultContent(this.subscribe);
+		const btnStyles = document.createElement("link");
 
 		this.form.action = '/api/users/:userid/logs';
 		this.form.name = 'get-logs';
 		btn.dataset.test = 'get-logs-btn';
 		btn.textContent = 'Submit';
+
+		btnStyles.setAttribute("rel", "stylesheet");
+		btnStyles.setAttribute("href", "./btn.css");
 
 		this.form.addEventListener('submit', this.getLogs.bind(this));
 
@@ -40,7 +44,7 @@ class GetLogs extends HTMLElement {
 			btn,
 			result
 		);
-		shadow.append(this.form);
+		shadow.append(btnStyles, this.form);
 	}
 	async getLogs(event) {
 		event.preventDefault();

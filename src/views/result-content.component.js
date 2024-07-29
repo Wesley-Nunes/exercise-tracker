@@ -4,7 +4,7 @@ class ResultContent extends HTMLElement {
 
 	constructor(subscribe) {
 		super();
-		this.result = document.createElement('div');
+		this.result = document.createElement('pre');
 		this.subscribe = subscribe;
 	}
 	connectedCallback() {
@@ -13,7 +13,19 @@ class ResultContent extends HTMLElement {
 
 		style.textContent = `
 			.hidden {
-				visibility: hidden;
+				display:none;
+			}
+			pre {
+				background-color: #f4f4f4;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				padding: 16px;
+				margin: 0;
+				overflow-x: auto;
+				font-family: 'Courier New', Courier, monospace;
+				color: #333;
+				white-space: pre-wrap;
+				word-wrap: break-word;
 			}
 		`;
 
@@ -24,10 +36,10 @@ class ResultContent extends HTMLElement {
 		this.subscribe('exercises', this.addTextMessage.bind(this));
 		this.subscribe('logs', this.addTextMessage.bind(this));
 
-		shadow.append(this.result, style);
+		shadow.append(style, this.result);
 	}
 	addTextMessage(data) {
-		this.result.textContent = JSON.stringify(data);
+		this.result.textContent = JSON.stringify(data, null, 2); // Pretty print with 2 spaces
 		this.result.classList.remove('hidden');
 	}
 }
